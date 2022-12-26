@@ -1,23 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { HiPencilSquare, HiTrash, HiUserPlus } from "react-icons/hi2";
 
-export default function Home() {
-  const [data, setData] = useState([]);
+export default function Home(props) {
   let no = 1;
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const req = await fetch("/api/siswa");
-
-    const res = await req.json();
-
-    setData(res);
-  };
 
   const deleteHandler = async (id) => {
     const choice = confirm("are you sure you delete it?");
@@ -29,8 +15,6 @@ export default function Home() {
     });
 
     await req.json();
-
-    getData();
   };
 
   return (
@@ -59,7 +43,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {data.map((siswa) => (
+            {props.data.map((siswa) => (
               <tr
                 key={siswa._id}
                 className={no % 2 == 1 ? "bg-gray-100" : "bg-gray-50"}
@@ -96,4 +80,21 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const getData = async () => {
+    const req = await fetch("http://localhost:3000/api/siswa");
+
+    const res = await req.json();
+
+    return res;
+  };
+
+  const allData = await getData();
+  return {
+    props: {
+      data: allData,
+    },
+  };
 }

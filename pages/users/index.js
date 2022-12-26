@@ -1,0 +1,62 @@
+import Head from "next/head";
+
+export default function Users(props) {
+  let no = 1;
+
+  console.log(props.data);
+
+  return (
+    <div>
+      <Head>
+        <title>List User</title>
+      </Head>
+
+      <div className="container mx-auto p-5">
+        <table className="w-3/4 table-fixed shadow">
+          <thead>
+            <tr className="bg-gray-50 border-b-2 border-gray-200 text-left">
+              <th className="p-3 text-sm tracking-wider">No</th>
+              <th className="p-3 text-sm tracking-wider">Name</th>
+              <th className="p-3 text-sm tracking-wider">Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.data.map((user) => (
+              <tr
+                key={user._id}
+                className={no % 2 == 1 ? "bg-gray-100" : "bg-gray-50"}
+              >
+                <td className="p-3 text-sm tracking-wider text-gray-700">
+                  {no++}
+                </td>
+                <td className="p-3 text-sm tracking-wider text-gray-700">
+                  {user.username}
+                </td>
+                <td className="p-3 text-sm tracking-wider text-gray-700 truncate">
+                  {user.password}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+export async function getServerSideProps() {
+  const getData = async () => {
+    const req = await fetch("http://localhost:3000/api/users");
+
+    const res = await req.json();
+
+    return res;
+  };
+
+  const allData = await getData();
+  return {
+    props: {
+      data: allData,
+    },
+  };
+}

@@ -24,6 +24,7 @@ export default async function AddSiswa(req, res) {
     statusCode = 200;
     message = { message: "success" };
   } catch (error) {
+    statusCode = 400;
     message = { message: error.message };
   }
 
