@@ -5,6 +5,7 @@ import ButtonForm from "../../components/ButtonForm";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import { authPages } from "../../middlewares/authPages";
+import Link from "next/link";
 
 export function getServerSideProps(context) {
   authPages(context);
@@ -13,16 +14,21 @@ export function getServerSideProps(context) {
   };
 }
 
+Login.getLayout = function getLayout(page) {
+  return page;
+};
+
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState({
-    error: false,
-    message: "",
-  });
+  const [status, setStatus] = useState("");
 
   const loginHandler = async (e) => {
     e.preventDefault();
+
+    if (!username && !password) {
+      return setStatus("Fiels is require");
+    }
 
     const req = await fetch("/api/auth/login", {
       method: "POST",
@@ -38,16 +44,10 @@ export default function Login() {
     const res = await req.json();
 
     if (res.message === "failed") {
-      return setStatus({
-        error: true,
-        message: res.error,
-      });
+      return setStatus(res.error);
     }
 
-    setStatus({
-      error: false,
-      message: "success",
-    });
+    setStatus("");
 
     Cookies.set("token", res.token, { expires: 7, sameSite: "strict" });
 
@@ -55,7 +55,7 @@ export default function Login() {
   };
 
   return (
-    <Form status={status} onSubmit={loginHandler}>
+    <Form status={status} onSubmit={loginHandler} className="min-h-screen">
       <InputForm
         placeholder="Insert Username"
         onChange={(e) => setUsername(e.target.value)}
@@ -73,6 +73,12 @@ export default function Login() {
         Password :
       </InputForm>
       <ButtonForm>Login</ButtonForm>
+      <Link
+        href="/auth/register"
+        className="text-center hover:underline text-slate-900 hover:opacity-80"
+      >
+        Register
+      </Link>
     </Form>
   );
 }

@@ -57,7 +57,7 @@ export default function Home(props) {
           </div>
         )}
 
-        <table className="w-3/4 table-auto shadow">
+        <table className="w-full table-auto shadow">
           <thead>
             <tr className="bg-gray-50 border-b-2 border-gray-200 text-left">
               <th className="p-3 text-sm tracking-wider">No</th>

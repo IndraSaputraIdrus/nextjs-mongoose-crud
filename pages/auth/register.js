@@ -2,30 +2,47 @@ import Form from "../../components/Form";
 import InputForm from "../../components/InputForm";
 import { useState } from "react";
 import ButtonForm from "../../components/ButtonForm";
-import { unAuthPages } from "../../middlewares/authPages";
+import { authPages } from "../../middlewares/authPages";
+import Link from "next/link";
 
 export function getServerSideProps(context) {
-  unAuthPages(context);
+  authPages(context);
   return {
     props: {},
   };
 }
 
-export default function Login() {
+Register.getLayout = function getLayout(page) {
+  return page;
+};
+
+export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [status, setStatus] = useState({
-    error: false,
-    message: "",
-  });
+  const [status, setStatus] = useState("");
 
-  const formHandler = (e) => {
+  const formHandler = async (e) => {
     e.preventDefault();
+    try {
+      const req = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password, confirmPassword }),
+      });
+
+      const res = await req.json();
+      setStatus(res.message);
+    } catch (error) {
+      console.log(error.message);
+      setStatus("Failed To Register");
+    }
   };
 
   return (
-    <Form onSubmit={formHandler} status={status}>
+    <Form onSubmit={formHandler} status={status} className="min-h-screen">
       <InputForm
         placeholder="Insert Username"
         onChange={(e) => setUsername(e.target.value)}
@@ -49,7 +66,13 @@ export default function Login() {
       >
         Confirm Password :
       </InputForm>
-      <ButtonForm>Login</ButtonForm>
+      <ButtonForm>Register</ButtonForm>
+      <Link
+        href="/auth/login"
+        className="text-center hover:underline text-slate-900 hover:opacity-80"
+      >
+        Login
+      </Link>
     </Form>
   );
 }

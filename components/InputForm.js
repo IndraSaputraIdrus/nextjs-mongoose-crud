@@ -15,7 +15,7 @@ export default function InputForm(props) {
     if (props.type === "password") {
       inputPassword.current.type = show;
     }
-  }, [active]);
+  }, [active, show]);
   return (
     <div className="flex flex-col gap-2">
       <label className="text-sm tracking-wider font-bold">

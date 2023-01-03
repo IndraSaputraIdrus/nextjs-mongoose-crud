@@ -14,10 +14,7 @@ export function getServerSideProps(context) {
 export default function Add() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState({
-    error: false,
-    message: "",
-  });
+  const [status, setStatus] = useState("");
   const router = useRouter();
   const { id } = router.query;
 
@@ -56,10 +53,7 @@ export default function Add() {
     console.log(res);
 
     if (res.message !== "success") {
-      return setStatus({
-        error: true,
-        message: "Form Not Valid",
-      });
+      return setStatus("Form Not Valid!");
     }
 
     Router.push("/");

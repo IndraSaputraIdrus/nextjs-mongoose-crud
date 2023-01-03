@@ -1,11 +1,5 @@
 import Head from "next/head";
-
-export function getServerSideProps(context) {
-  unAuthPages(context);
-  return {
-    props: {},
-  };
-}
+import { unAuthPages } from "../../middlewares/authPages";
 
 export default function Users(props) {
   let no = 1;
@@ -17,7 +11,7 @@ export default function Users(props) {
       </Head>
 
       <div className="container mx-auto p-5">
-        <table className="w-3/4 table-fixed shadow">
+        <table className="w-full table-fixed shadow">
           <thead>
             <tr className="bg-gray-50 border-b-2 border-gray-200 text-left">
               <th className="p-3 text-sm tracking-wider">No</th>
@@ -49,7 +43,8 @@ export default function Users(props) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  unAuthPages(context);
   const getData = async () => {
     const req = await fetch("http://localhost:3000/api/users");
 
