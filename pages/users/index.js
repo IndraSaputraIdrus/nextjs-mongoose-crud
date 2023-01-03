@@ -46,7 +46,7 @@ export default function Users(props) {
 export async function getServerSideProps(context) {
   unAuthPages(context);
   const getData = async () => {
-    const req = await fetch("http://localhost:3000/api/users");
+    const req = await fetch(`${process.env.DOMAIN}/api/users`);
 
     const res = await req.json();
 
