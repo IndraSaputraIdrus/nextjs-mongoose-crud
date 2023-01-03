@@ -2,6 +2,14 @@ import Form from "../../components/Form";
 import InputForm from "../../components/InputForm";
 import { useState } from "react";
 import ButtonForm from "../../components/ButtonForm";
+import { unAuthPages } from "../../middlewares/authPages";
+
+export function getServerSideProps(context) {
+  unAuthPages(context);
+  return {
+    props: {},
+  };
+}
 
 export default function Login() {
   const [username, setUsername] = useState("");

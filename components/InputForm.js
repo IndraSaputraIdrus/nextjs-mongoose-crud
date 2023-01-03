@@ -1,14 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
 export default function InputForm(props) {
   const [active, setActive] = useState(false);
   const [show, setShow] = useState("password");
+  const inputPassword = useRef();
   useEffect(() => {
     if (active) {
       setShow("text");
     } else {
       setShow("password");
+    }
+
+    if (props.type === "password") {
+      inputPassword.current.type = show;
     }
   }, [active]);
   return (
@@ -18,11 +23,12 @@ export default function InputForm(props) {
       </label>
       <div className={props.type === "password" ? "flex gap-2" : ""}>
         <input
-          type={show}
-          className="w-full text-gray-400 bg-gray-200 p-3 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-slate-900"
+          type={props.type}
+          className="w-full text-slate-700 bg-gray-200 p-3 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-slate-900"
           placeholder={props.placeholder}
           onChange={props.onChange}
           value={props.value}
+          ref={inputPassword}
         />
         {props.type === "password" && (
           <button

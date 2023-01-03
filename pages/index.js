@@ -1,20 +1,38 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { HiPencilSquare, HiTrash, HiUserPlus } from "react-icons/hi2";
+import { unAuthPages } from "../middlewares/authPages";
 
 export default function Home(props) {
   let no = 1;
 
-  const deleteHandler = async (id) => {
-    const choice = confirm("are you sure you delete it?");
+  const [students, setStudents] = useState([]);
+  const [message, setMessage] = useState("");
 
-    if (!choice) return;
+  useEffect(() => {
+    setStudents(props.data);
+  }, []);
+
+  const deleteHandler = async (id) => {
+    const ask = confirm("are you sure you delete it?");
+
+    if (!ask) return;
 
     const req = await fetch(`/api/siswa/delete/${id}`, {
       method: "DELETE",
     });
 
-    await req.json();
+    if (!req.ok) {
+      return setMessage("Failed to delete data");
+    }
+
+    const filteredStudents = students.filter((student) => {
+      return student._id !== id;
+    });
+
+    setStudents(filteredStudents);
+    setMessage("");
   };
 
   return (
@@ -33,6 +51,12 @@ export default function Home(props) {
           </Link>
         </button>
 
+        {message && (
+          <div className="bg-red-500 w-3/4 text-center py-2 text-white mb-5 shadow-lg rounded-lg">
+            {message}
+          </div>
+        )}
+
         <table className="w-3/4 table-auto shadow">
           <thead>
             <tr className="bg-gray-50 border-b-2 border-gray-200 text-left">
@@ -43,7 +67,7 @@ export default function Home(props) {
             </tr>
           </thead>
           <tbody>
-            {props.data.map((siswa) => (
+            {students.map((siswa) => (
               <tr
                 key={siswa._id}
                 className={no % 2 == 1 ? "bg-gray-100" : "bg-gray-50"}
@@ -83,6 +107,8 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps(context) {
+  unAuthPages(context);
+
   const getData = async () => {
     const req = await fetch("http://localhost:3000/api/siswa");
 

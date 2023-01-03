@@ -4,6 +4,12 @@ import Form from "../components/Form";
 import InputForm from "../components/InputForm";
 import ButtonForm from "../components/ButtonForm";
 import Head from "next/head";
+import { unAuthPages } from "../middlewares/authPages";
+
+export function getServerSideProps(context) {
+  unAuthPages(context);
+  return { props: {} };
+}
 
 export default function Add() {
   const [name, setName] = useState("");

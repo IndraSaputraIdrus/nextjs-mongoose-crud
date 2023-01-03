@@ -1,9 +1,14 @@
 import Head from "next/head";
 
+export function getServerSideProps(context) {
+  unAuthPages(context);
+  return {
+    props: {},
+  };
+}
+
 export default function Users(props) {
   let no = 1;
-
-  console.log(props.data);
 
   return (
     <div>
