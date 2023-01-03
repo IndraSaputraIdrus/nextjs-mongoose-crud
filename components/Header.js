@@ -1,19 +1,18 @@
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
+import Logout from "./Logout";
 
-export default function Header({ logout }) {
+export default function Header({ menu, setMenu }) {
   return (
     <header className="p-5 bg-slate-800 text-white">
       <nav className="flex gap-2 items-center">
-        <h2 className="mr-auto text-xl uppercase">Students</h2>
-        <p>name</p>|
-        <button
-          type="button"
-          className="hover:bg-opacity-80 bg-red-500 py-1 px-3 rounded-md flex items-center gap-2"
-          onClick={logout}
+        <div
+          onClick={() => setMenu(!menu)}
+          className="block text-2xl mr-5 md:hidden"
         >
-          Logout
-          <FaSignOutAlt />
-        </button>
+          {menu ? <FaTimes /> : <FaBars />}
+        </div>
+        <h2 className="mr-auto text-xl uppercase">Students</h2>
+        <Logout className="hidden md:flex md:items-center gap-4" />
       </nav>
     </header>
   );

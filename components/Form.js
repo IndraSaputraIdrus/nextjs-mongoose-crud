@@ -1,11 +1,11 @@
 export default function Form(props) {
   return (
     <div
-      className={`container mx-auto px-2 flex items-center justify-center ${props.className}`}
+      className={`container mx-auto px-5 flex items-center justify-center ${props.className}`}
     >
       <form
         onSubmit={props.onSubmit}
-        className="max-w-lg bg-white my-10 p-5 flex flex-col gap-5 rounded-md shadow border-2 border-slate-400"
+        className="w-full md:max-w-lg bg-white my-10 p-5 flex flex-col gap-5 rounded-md shadow border-2 border-slate-400"
       >
         {props.status && (
           <div

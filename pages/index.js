@@ -57,13 +57,13 @@ export default function Home(props) {
           </div>
         )}
 
-        <table className="w-full table-auto shadow">
+        <table className="w-full table-fixed shadow">
           <thead>
             <tr className="bg-gray-50 border-b-2 border-gray-200 text-left">
-              <th className="p-3 text-sm tracking-wider">No</th>
-              <th className="p-3 text-sm tracking-wider">Name</th>
-              <th className="p-3 text-sm tracking-wider">Email</th>
-              <th className="p-3 text-sm tracking-wider">Actions</th>
+              <th className="p-3 text-sm tracking-wider w-1/12">No</th>
+              <th className="p-3 text-sm tracking-wider w-4/12">Name</th>
+              <th className="p-3 text-sm tracking-wider w-4/12">Email</th>
+              <th className="p-3 text-sm tracking-wider w-3/12">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -78,21 +78,21 @@ export default function Home(props) {
                 <td className="p-3 text-sm tracking-wider text-gray-700">
                   {siswa.name}
                 </td>
-                <td className="p-3 text-sm tracking-wider text-gray-700">
+                <td className="p-3 text-sm tracking-wider text-gray-700 truncate">
                   {siswa.email}
                 </td>
-                <td className="p-3 text-xs text-white flex gap-2">
+                <td className="p-3 text-xs text-white flex gap-2 items-center flex-col md:flex-row">
                   <button>
                     <Link
                       href={`/update/${siswa._id}`}
-                      className="py-1 px-4 rounded-full bg-green-500 hover:bg-green-700 flex items-center gap-1"
+                      className="py-1 px-5 rounded-full bg-green-500 hover:bg-green-700 flex items-center gap-1"
                     >
                       Edit <HiPencilSquare />
                     </Link>
                   </button>
                   <button
                     onClick={() => deleteHandler(siswa._id)}
-                    className="py-1 px-4 rounded-full bg-red-500 hover:bg-red-700 flex items-center gap-1"
+                    className="py-1 px-3 rounded-full bg-red-500 hover:bg-red-700 flex items-center gap-1"
                   >
                     Delete <HiTrash />
                   </button>

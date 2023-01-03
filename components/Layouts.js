@@ -1,21 +1,15 @@
 import Aside from "./Aside";
 import Footer from "./Footer";
 import Header from "./Header";
-import Cookies from "js-cookie";
-import Router from "next/router";
+import { useState } from "react";
 
 export default function Layouts({ children }) {
-  const logoutHandler = () => {
-    if (Cookies.get("token")) {
-      Cookies.remove("token");
-      Router.push("/auth/login");
-    }
-  };
+  const [menu, setMenu] = useState(false);
   return (
     <div className="flex min-h-screen">
-      <Aside />
+      <Aside menu={menu} />
       <div className="flex flex-col w-full">
-        <Header logout={logoutHandler} />
+        <Header menu={menu} setMenu={setMenu} />
         <main>{children}</main>
         <Footer />
       </div>
