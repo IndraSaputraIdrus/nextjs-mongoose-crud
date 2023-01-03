@@ -110,7 +110,7 @@ export async function getServerSideProps(context) {
   unAuthPages(context);
 
   const getData = async () => {
-    const req = await fetch("http://localhost:3000/api/siswa");
+    const req = await fetch(`${process.env.VERCEL_URL}/api/siswa`);
 
     const res = await req.json();
 
