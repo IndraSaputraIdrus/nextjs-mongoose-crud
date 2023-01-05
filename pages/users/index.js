@@ -49,7 +49,7 @@ export async function getServerSideProps(context) {
   const token = verifyTokenCookie(context);
 
   const getData = async () => {
-    const req = await fetch(`${process.env.DOMAIN}/api/users`, {
+    const req = await fetch(`${process.env.VERCEL_URL}/api/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
