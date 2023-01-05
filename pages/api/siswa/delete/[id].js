@@ -1,8 +1,12 @@
 import siswaModel from "../../../../models/SiswaModel";
 import { connect } from "../../../../libs/db";
+import { verifyTokenApi } from "../../../../middlewares/authPages";
 
 export default async function DeleteSiswa(req, res) {
   if (req.method !== "DELETE") return res.status(405).end();
+
+  verifyTokenApi(req, res);
+
   const { id } = req.query;
   let statusCode;
   let message;

@@ -45,8 +45,15 @@ export default function Users(props) {
 
 export async function getServerSideProps(context) {
   unAuthPages(context);
+
+  const token = verifyTokenCookie(context);
+
   const getData = async () => {
-    const req = await fetch(`${process.env.DOMAIN}/api/users`);
+    const req = await fetch(`${process.env.DOMAIN}/api/users`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     const res = await req.json();
 

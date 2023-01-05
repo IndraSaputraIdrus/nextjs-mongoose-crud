@@ -4,14 +4,17 @@ import Form from "../../components/Form";
 import InputForm from "../../components/InputForm";
 import ButtonForm from "../../components/ButtonForm";
 import Head from "next/head";
-import { unAuthPages } from "../../middlewares/authPages";
+import { unAuthPages, verifyTokenCookie } from "../../middlewares/authPages";
 
 export function getServerSideProps(context) {
   unAuthPages(context);
-  return { props: {} };
+
+  const token = verifyTokenCookie(context);
+
+  return { props: { token } };
 }
 
-export default function Add() {
+export default function Add({ token }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
@@ -28,7 +31,11 @@ export default function Add() {
   }, [id]);
 
   const getDataById = async (id) => {
-    const req = await fetch(`/api/siswa/${id}`);
+    const req = await fetch(`/api/siswa/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const res = await req.json();
     setName(res.name);
     setEmail(res.email);
@@ -41,6 +48,7 @@ export default function Add() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         name,

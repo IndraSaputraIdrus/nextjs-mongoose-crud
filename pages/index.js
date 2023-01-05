@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HiPencilSquare, HiTrash, HiUserPlus } from "react-icons/hi2";
-import { unAuthPages } from "../middlewares/authPages";
+import { unAuthPages, verifyTokenCookie } from "../middlewares/authPages";
 
 export default function Home(props) {
   let no = 1;
@@ -21,6 +21,9 @@ export default function Home(props) {
 
     const req = await fetch(`/api/siswa/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+      },
     });
 
     if (!req.ok) {
@@ -109,8 +112,14 @@ export default function Home(props) {
 export async function getServerSideProps(context) {
   unAuthPages(context);
 
+  const token = verifyTokenCookie(context);
+
   const getData = async () => {
-    const req = await fetch(`${process.env.DOMAIN}/api/siswa`);
+    const req = await fetch(`${process.env.DOMAIN}/api/siswa`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     const res = await req.json();
 
@@ -121,6 +130,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: allData,
+      token,
     },
   };
 }
