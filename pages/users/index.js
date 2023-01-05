@@ -1,8 +1,25 @@
 import Head from "next/head";
-import { unAuthPages } from "../../middlewares/authPages";
+import { useEffect, useState } from "react";
+import { unAuthPages, verifyTokenCookie } from "../../middlewares/authPages";
 
 export default function Users(props) {
+  const [users, setUsers] = useState([]);
   let no = 1;
+
+  const getData = async () => {
+    const req = await fetch(`/api/users`, {
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+      },
+    });
+
+    const res = await req.json();
+    setUsers(res);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div>
@@ -20,7 +37,7 @@ export default function Users(props) {
             </tr>
           </thead>
           <tbody>
-            {props.data.map((user) => (
+            {users.map((user) => (
               <tr
                 key={user._id}
                 className={no % 2 == 1 ? "bg-gray-100" : "bg-gray-50"}
@@ -48,22 +65,7 @@ export async function getServerSideProps(context) {
 
   const token = verifyTokenCookie(context);
 
-  const getData = async () => {
-    const req = await fetch(`${process.env.VERCEL_URL}/api/users`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const res = await req.json();
-
-    return res;
-  };
-
-  const allData = await getData();
   return {
-    props: {
-      data: allData,
-    },
+    props: { token },
   };
 }

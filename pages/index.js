@@ -11,8 +11,19 @@ export default function Home(props) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    setStudents(props.data);
+    getData();
   }, []);
+
+  const getData = async () => {
+    const req = await fetch(`/api/siswa`, {
+      headers: {
+        Authorization: `Bearer ${props.token}`,
+      },
+    });
+
+    const res = await req.json();
+    setStudents(res);
+  };
 
   const deleteHandler = async (id) => {
     const ask = confirm("are you sure you delete it?");
@@ -114,22 +125,8 @@ export async function getServerSideProps(context) {
 
   const token = verifyTokenCookie(context);
 
-  const getData = async () => {
-    const req = await fetch(`${process.env.VERCEL_URL}/api/siswa`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const res = await req.json();
-
-    return res;
-  };
-
-  const allData = await getData();
   return {
     props: {
-      data: allData,
       token,
     },
   };
