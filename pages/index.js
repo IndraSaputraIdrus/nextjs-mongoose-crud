@@ -11,7 +11,16 @@ export default function Home(props) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    setStudents(props.data);
+    if (students.length <= 0) {
+      setStudents([
+        {
+          name: "indra",
+          email: "indra",
+        },
+      ]);
+    } else {
+      setStudents(props.data);
+    }
   }, []);
 
   const deleteHandler = async (id) => {
