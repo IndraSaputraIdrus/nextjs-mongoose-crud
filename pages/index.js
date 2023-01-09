@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HiPencilSquare, HiTrash, HiUserPlus } from "react-icons/hi2";
-import { unAuthPages, verifyTokenCookie } from "../middlewares/authPages";
+import { unAuthPages } from "../middlewares/authPages";
 
 export default function Home(props) {
   let no = 1;
@@ -11,19 +11,8 @@ export default function Home(props) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    getData();
+    setStudents(props.data);
   }, []);
-
-  const getData = async () => {
-    const req = await fetch(`/api/siswa`, {
-      headers: {
-        Authorization: `Bearer ${props.token}`,
-      },
-    });
-
-    const res = await req.json();
-    setStudents(res);
-  };
 
   const deleteHandler = async (id) => {
     const ask = confirm("are you sure you delete it?");
@@ -32,9 +21,6 @@ export default function Home(props) {
 
     const req = await fetch(`/api/siswa/delete/${id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${props.token}`,
-      },
     });
 
     if (!req.ok) {
@@ -123,11 +109,18 @@ export default function Home(props) {
 export async function getServerSideProps(context) {
   unAuthPages(context);
 
-  const token = verifyTokenCookie(context);
+  const getData = async () => {
+    const req = await fetch(`${process.env.DOMAIN}/api/siswa`);
 
+    const res = await req.json();
+
+    return res;
+  };
+
+  const allData = await getData();
   return {
     props: {
-      token,
+      data: allData,
     },
   };
 }

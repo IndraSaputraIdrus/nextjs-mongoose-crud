@@ -4,8 +4,6 @@ import siswaModel from "../../../../models/SiswaModel";
 export default async function UpdateById(req, res) {
   if (req.method !== "PUT") return res.status(405).end();
 
-  verifyTokenApi(req, res);
-
   const { id } = req.query;
   const { name, email } = req.body;
 

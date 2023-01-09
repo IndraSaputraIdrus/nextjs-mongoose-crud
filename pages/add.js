@@ -4,17 +4,14 @@ import Form from "../components/Form";
 import InputForm from "../components/InputForm";
 import ButtonForm from "../components/ButtonForm";
 import Head from "next/head";
-import { unAuthPages, verifyTokenCookie } from "../middlewares/authPages";
+import { unAuthPages } from "../middlewares/authPages";
 
 export function getServerSideProps(context) {
   unAuthPages(context);
-
-  const token = verifyTokenCookie(context);
-
-  return { props: { token } };
+  return { props: {} };
 }
 
-export default function Add({ token }) {
+export default function Add() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
@@ -26,7 +23,6 @@ export default function Add({ token }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         name,
