@@ -12,16 +12,7 @@ export default function Home(props) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (students.length < 1) {
-      setStudents([
-        {
-          name: "indra",
-          email: "indra",
-        },
-      ]);
-    } else {
-      setStudents(props.data);
-    }
+    setStudents(props.data);
   }, []);
 
   const deleteHandler = async (id) => {
@@ -128,7 +119,6 @@ export async function getServerSideProps(context) {
   };
 
   const allData = await getData();
-  console.log(allData);
   return {
     props: {
       data: allData,

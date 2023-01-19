@@ -47,7 +47,7 @@ export default function Users(props) {
 export async function getServerSideProps(context) {
   unAuthPages(context);
   const getData = async () => {
-    const req = await fetch(`${fetchUrl()}api/users`);
+    const req = await fetch(`${fetchUrl()}/api/users`);
 
     const res = await req.json();
 
