@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { HiPencilSquare, HiTrash, HiUserPlus } from "react-icons/hi2";
+import fetchUrl from "../libs/fetchUrl";
 import { unAuthPages } from "../middlewares/authPages";
 
 export default function Home(props) {
@@ -11,7 +12,7 @@ export default function Home(props) {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (students.length <= 0) {
+    if (students.length < 1) {
       setStudents([
         {
           name: "indra",
@@ -119,7 +120,7 @@ export async function getServerSideProps(context) {
   unAuthPages(context);
 
   const getData = async () => {
-    const req = await fetch(`${process.env.DOMAIN}/api/siswa`);
+    const req = await fetch(`${fetchUrl()}/api/siswa`);
 
     const res = await req.json();
 
@@ -127,6 +128,7 @@ export async function getServerSideProps(context) {
   };
 
   const allData = await getData();
+  console.log(allData);
   return {
     props: {
       data: allData,

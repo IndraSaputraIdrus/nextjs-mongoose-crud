@@ -1,4 +1,5 @@
 import Head from "next/head";
+import fetchUrl from "../../libs/fetchUrl";
 import { unAuthPages } from "../../middlewares/authPages";
 
 export default function Users(props) {
@@ -46,7 +47,7 @@ export default function Users(props) {
 export async function getServerSideProps(context) {
   unAuthPages(context);
   const getData = async () => {
-    const req = await fetch(`${process.env.DOMAIN}/api/users`);
+    const req = await fetch(`${fetchUrl()}api/users`);
 
     const res = await req.json();
 
